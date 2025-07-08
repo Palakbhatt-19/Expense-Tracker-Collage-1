@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>One Page Contact</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: linear-gradient(to right, #3b0a50, #f0047f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 800px;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 25px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .form {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+    }
+    .form input, .form textarea {
+      padding: 12px 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      width: 100%;
+    }
+    .form textarea {
+      resize: none;
+      height: 100px;
+    }
+    .form button {
+      background: #ff007f;
+      border: none;
+      padding: 12px;
+      font-size: 1.1em;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .form button:hover {
+      background: #e60073;
+    }
+  </style>
+</head>
+<body>
+   <img src="{{ url_for('static', filename='logo.png') }}" 
+       style="position: absolute; top: 10px; left: 10px;
+              height: 60px; width: 50px;
+              border-radius: 50%;
+              border: 2px solid white;
+              object-fit: cover;
+              background: white;
+              box-shadow: 0 0 8px rgba(0,0,0,0.3);">
+</a>
+  <div class="container">
+    <nav>
+      <a href="#">About</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="login.html">Login</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div>
+      <h2>Contact Us</h2>
+      <p>We’d love to hear from you! Fill out the form below:</p>
+    </div>
+    <form class="form" onsubmit="handleSubmit(event)">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="you@example.com" required>
+      <textarea placeholder="Your message..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert("Thank you for contacting us!");
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

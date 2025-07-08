@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Expense Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #2c003e, #ff007f);
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+      }
+
+      .charts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+      }
+
+      .chart-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 20px;
+        width: 400px;
+        height: 400px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+     .tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tracker-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.view-modes {
+
+  gap: 8px;
+}
+
+.view-btn {
+  padding: 6px 12px;
+  background-color: #ff007f;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: #cc0066;
+}
+
+.line-chart {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+
+    </style>
+  </head>
+  <body> 
+  
+
+    <h1>📊 Expense Analysis</h1>
+    
+
+    <div class="charts">
+      <div class="chart-container">
+        <canvas id="pieChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="barChart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+          var labels = {{ labels | tojson | safe }};
+          var amounts = {{ amounts | tojson | safe }};
+          var categories = {{ categories | tojson | safe }};
+          var category_totals = {{ category_totals | tojson | safe }};
+          console.log("Labels:", {{ labels | tojson | safe }});
+          console.log("Amounts:", {{ amounts | tojson | safe }});
+          console.log("Categories:", {{ categories | tojson | safe }});
+          console.log("Category Totals:", {{ category_totals | tojson | safe }});
+
+
+
+
+
+
+      
+
+
+
+          // Bar Chart (Category-wise)
+          new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+              labels: categories,
+              datasets: [{
+                label: 'Category-wise Expense',
+                data: category_totals,
+                backgroundColor: '#36a2eb'
+              }]
+            }
+          });
+
+          // Pie Chart
+          new Chart(document.getElementById('pieChart'), {
+            type: 'pie',
+            data: {
+              labels: categories,
+              datasets: [{
+                label: 'Expenses by Category',
+                data: category_totals,
+                backgroundColor: [
+                  '#f94144', '#f3722c', '#f8961e', '#f9c74f',
+                  '#90be6d', '#43aa8b', '#577590', '#277da1'
+                ]
+              }]
+            }
+          });
+
+          // Line Chart (Title-wise, or Date-wise if preferred)
+          new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Expenses Over Items',
+                data: amounts,
+                borderColor: '#ff6384',
+                fill: false,
+                tension: 0.4
+              }]
+            }
+          });
+    </script>
+    
+  </body>
+</html>

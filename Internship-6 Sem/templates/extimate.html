@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Future Expense Estimate</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #3b0a50, #f0047f);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background-color: rgba(255,255,255,0.1);
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .box h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .box p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Future Expense Forecast</h2>
+    <p>Your estimated expenses for the next year are:</p>
+    <h1>₹{{ estimate }}</h1>
+    <br/>
+    <a href="{{ url_for('desktop') }}" style="color:white; text-decoration:underline;">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

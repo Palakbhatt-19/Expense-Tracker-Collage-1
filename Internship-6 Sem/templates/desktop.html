@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Expense Tracker</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #3b0a50, #f0047f);
+        color: white;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .box {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+      }
+
+      input,
+      select,
+      button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #e91e63;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #c2185b;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #6a1b9a;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .edit-btn {
+        background-color: #6a0dad;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .delete-btn {
+        background-color: #e60039;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .analysis-button {
+        background-color: #28a745;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 14px;
+        font-weight: bold;
+        font-size: 20px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s ease;
+      }
+
+      .analysis-button:hover {
+        background-color: #218838;
+      }
+
+      .analysis-button .icon {
+        width: 30px;
+        height: 30px;
+      }
+
+    
+  #chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f31260;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  #chatbox {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+    padding: 15px;
+    z-index: 1000;
+  }
+
+  #chatbox textarea {
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+  }
+
+  #chatbox button {
+    background-color: #f31260;
+    border: none;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  #chat-response {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div style="position: fixed; top: 20px; right: 20px; z-index: 999">
+        <a
+          href="/logout"
+          style="
+            padding: 8px 15px;
+            background-color: #ff4d6d;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          "
+        >
+          🔒 Logout
+        </a>
+      </div>
+      
+  <img src="{{ url_for('static', filename='logo.png') }}" 
+       style="position: absolute; top: 10px; left: 10px;
+              height: 70px; width: 50px;
+              border-radius: 50%;
+              border: 2px solid white;
+              object-fit: cover;
+              background: white;
+              box-shadow: 0 0 8px rgba(0,0,0,0.3);">
+</a>
+
+
+
+      <h2>Welcome, {{ user }}</h2>
+
+      <!-- Add Expense -->
+      <div class="box">
+        <h3>Add Expense</h3>
+        <form method="POST" action="/add_expense">
+          <input
+            type="text"
+            name="title"
+            placeholder="Expense Title"
+            required
+          />
+          <input type="number" name="amount" placeholder="Amount" required />
+          <input type="date" name="date" required />
+          <select name="category" required>
+            <option value="">Select Category</option>
+            <option>Tuition</option>
+            <option>Hostel</option>
+            <option>Food</option>
+            <option>Transport</option>
+            <option>Stationery</option>
+          </select>
+          <button type="submit">Add</button>
+        </form>
+      </div>
+
+      <!-- Your Expenses -->
+      <div class="box">
+        <h3>Your Expenses</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for expense in expenses %}
+            <tr>
+              <td>{{ expense.title }}</td>
+              <td>₹{{ expense.amount }}</td>
+              <td>{{ expense.date }}</td>
+              <td>{{ expense.category }}</td>
+              <td>
+                <div class="action-buttons">
+                  <form action="/edit_expense/{{ expense.id }}" method="get">
+                    <button class="edit-btn" type="submit">Edit</button>
+                  </form>
+                  <form action="/delete_expense/{{ expense.id }}" method="post">
+                    <button class="delete-btn" type="submit">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- View Analysis Button -->
+      <a href="{{ url_for('analysis') }}" class="analysis-button">
+        <img
+          src="https://img.icons8.com/color/48/000000/combo-chart--v1.png"
+          alt="chart icon"
+          class="icon"
+        />
+        View Expense Analysis
+      </a>
+    </div>
+    <button id="chat-toggle">
+  🤖
+</button>
+
+<!-- Chat Box -->
+<div id="chatbox">
+  <textarea id="user-input" placeholder="Ask something..." rows="3"></textarea>
+  <button onclick="sendMessage()">Send</button>
+  <div id="chat-response"></div>
+</div>
+
+<!-- Script for toggle and chatbot logic -->
+<script>
+  const chatToggle = document.getElementById('chat-toggle');
+  const chatbox = document.getElementById('chatbox');
+
+  chatToggle.onclick = () => {
+    chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
+  };
+
+  async function sendMessage() {
+    const userInput = document.getElementById('user-input').value;
+    const responseBox = document.getElementById('chat-response');
+    responseBox.innerHTML = "Thinking...";
+
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userInput })
+    });
+
+    const data = await response.json();
+    responseBox.innerHTML = '<strong>ChatGPT:</strong> ' + data.reply;
+  }
+</script>
+       
+
+     
+
+
+
+  </body>
+</html>
